@@ -1,0 +1,24 @@
+name: Build SplitDock
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install RootHide Theos
+        shell: bash
+        run: |
+          export THEOS="$RUNNER_TEMP/theos"
+          bash -c "$(curl -fsSL https://raw.githubusercontent.com/roothide/theos/master/bin/install-theos)"
+          echo "THEOS=$THEOS" >> "$GITHUB_ENV"
+      - name: Build package
+        run: make clean package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SplitDock-deb
+          path: packages/*.deb
+          if-no-files-found: error
