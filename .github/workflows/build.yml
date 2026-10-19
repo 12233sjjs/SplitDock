@@ -23,7 +23,7 @@ jobs:
             | tar -xJ -C "$THEOS/sdks"
           echo "THEOS=$THEOS" >> "$GITHUB_ENV"
 
-       name: Build package
+      - name: Build package
         working-directory: ./SplitDock
         run: make clean package
 
@@ -31,10 +31,4 @@ jobs:
         with:
           name: SplitDock-deb
           path: SplitDock/packages/*.deb
-          if-no-files-found: error
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: SplitDock-deb
-          path: packages/*.deb
           if-no-files-found: error
